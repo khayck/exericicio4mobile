@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de IMC</title>
+    <style>
+        /* CSS: Estilização e Layout Responsivo */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f2f5;
+        }
+
+        .imc-container {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        h2 { color: #333; margin-bottom: 20px; }
+
+        .input-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #555;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            box-sizing: border-box;
+            transition: border-color 0.3s;
+        }
+
+        input:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        button:hover { background-color: #0056b3; }
+
+        .resultado-area {
+            margin-top: 25px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #f8f9fa;
+            font-size: 18px;
+            font-weight: bold;
+            min-height: 25px;
+        }
+
+        /* Classes de feedback visual */
+        .normal { color: #28a745; background-color: #d4edda; }
+        .atencao { color: #856404; background-color: #fff3cd; }
+        .alerta { color: #dc3545; background-color: #f8d7da; }
+    </style>
+</head>
+<body>
+
+    <div class="imc-container">
+        <h2>Calculadora de IMC</h2>
+        
+        <div class="input-group">
+            <label for="peso">Peso (kg):</label>
+            <input type="number" id="peso" placeholder="Ex: 75.5" step="0.1">
+        </div>
+
+        <div class="input-group">
+            <label for="altura">Altura (m):</label>
+            <input type="number" id="altura" placeholder="Ex: 1.75" step="0.01">
+        </div>
+
+        <button onclick="calcularIMC()">Calcular Resultado</button>
+
+        <div id="resultado" class="resultado-area">
+            Resultado aparecerá aqui.
+        </div>
+    </div>
+
+    <script>
+        // JS: Lógica de Cálculo e Classificação
+        function calcularIMC() {
+            const peso = parseFloat(document.getElementById('peso').value);
+            const altura = parseFloat(document.getElementById('altura').value);
+            const resDiv = document.getElementById('resultado');
+
+            // Validação simples
+            if (!peso || !altura || altura <= 0) {
+                resDiv.innerHTML = "Dados inválidos!";
+                resDiv.className = "resultado-area alerta";
+                return;
+            }
+
+            const imc = (peso / (altura * altura)).toFixed(1);
+            let classificacao = "";
+            let classeCss = "";
+
+            if (imc < 18.5) {
+                classificacao = "Abaixo do peso";
+                classeCss = "atencao";
+            } else if (imc < 25) {
+                classificacao = "Peso normal";
+                classeCss = "normal";
+            } else if (imc < 30) {
+                classificacao = "Sobrepeso";
+                classeCss = "atencao";
+            } else {
+                classificacao = "Obesidade";
+                classeCss = "alerta";
+            }
+
+            resDiv.innerHTML = `IMC: ${imc} <br> <small>${classificacao}</small>`;
+            resDiv.className = `resultado-area ${classeCss}`;
+        }
+    </script>
+
+</body>
+</html>
